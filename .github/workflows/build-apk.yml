@@ -40,8 +40,9 @@ jobs:
 
       - name: Sync Web Assets to Android Project
         run: |
-          npx cap copy android
-          npx cap update android || true
+          mkdir -p android/app/src/main/assets/public
+          cp -r dist/* android/app/src/main/assets/public/
+          npx cap copy android || true
 
       - name: Build Android APK with Gradle
         working-directory: ./android
