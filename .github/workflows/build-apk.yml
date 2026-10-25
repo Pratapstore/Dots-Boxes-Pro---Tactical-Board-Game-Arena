@@ -52,30 +52,24 @@ jobs:
 
       - name: Build Android APK with Gradle
         working-directory: ./android
-        shell: bash
         run: |
-          set -o pipefail
-          ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace 2>&1 | tee ../gradle_output.txt
+          ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace
 
-      - name: Report Build Logs on Failure
+      - name: Save Diagnostic Log to Repo on Failure
         if: failure()
         run: |
-          echo "### ❌ Gradle Build Error Summary" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -n 120 gradle_output.txt >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          mkdir -p build_debug
+          ./android/gradlew -p android :app:assembleDebug --stacktrace > build_debug/error.txt 2>&1 || true
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add build_debug/error.txt
+          git commit -m "build failure diagnostic log"
+          git push origin main || true
 
       - name: Prepare Named APK File
         run: |
-          find . -name "*.apk"
           APK_FILE=$(find . -name "*.apk" | head -n 1)
-          if [ -z "$APK_FILE" ]; then
-            echo "❌ No APK was found in build outputs. Listing android/app/build:"
-            find android/ -name "*.apk" || true
-            find android/app/build -maxdepth 4 || true
-            exit 1
-          fi
-          echo "✅ Found APK at: $APK_FILE"
+          echo "Found APK at: $APK_FILE"
           cp "$APK_FILE" ./Dots-and-Boxes-Pro-v1.0.apk
           ls -lh ./Dots-and-Boxes-Pro-v1.0.apk
 
