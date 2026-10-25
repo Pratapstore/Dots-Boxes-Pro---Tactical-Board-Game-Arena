@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Dots &amp; Boxes Pro</string>
+    <string name="title_activity_main">Dots &amp; Boxes Pro</string>
+    <string name="package_name">com.dotsandboxes.pro</string>
+    <string name="custom_url_scheme">com.dotsandboxes.pro</string>
+</resources>

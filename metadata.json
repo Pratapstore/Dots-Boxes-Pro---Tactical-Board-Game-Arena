@@ -1,0 +1,7 @@
+{
+  "name": "Dots & Boxes Pro",
+  "description": "Premium multiplayer Dots and Boxes strategy game with smart AI opponents, real-time online rooms, challenges, leaderboards, and interactive tutorial.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

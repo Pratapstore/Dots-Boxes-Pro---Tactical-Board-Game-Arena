@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bg-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0B1120"/>
+    </radialGradient>
+    <linearGradient id="neon-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="neon-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+    <linearGradient id="neon-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C084FC"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+    <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="512" height="512" rx="112" fill="url(#bg-glow)" stroke="#334155" stroke-width="6"/>
+
+  <!-- Subtle Board Grid Background -->
+  <g opacity="0.15" stroke="#94A3B8" stroke-width="2">
+    <line x1="96" y1="96" x2="416" y2="96"/>
+    <line x1="96" y1="256" x2="416" y2="256"/>
+    <line x1="96" y1="416" x2="416" y2="416"/>
+    <line x1="96" y1="96" x2="96" y2="416"/>
+    <line x1="256" y1="96" x2="256" y2="416"/>
+    <line x1="416" y1="96" x2="416" y2="416"/>
+  </g>
+
+  <!-- Completed Box 1 (Cyan) -->
+  <rect x="106" y="106" width="140" height="140" rx="16" fill="#0EA5E9" fill-opacity="0.25" stroke="#38BDF8" stroke-width="3"/>
+  <circle cx="176" cy="176" r="28" fill="#0284C7" fill-opacity="0.5"/>
+  <path d="M164 176 L172 184 L190 166" fill="none" stroke="#E0F2FE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Completed Box 2 (Gold) -->
+  <rect x="266" y="266" width="140" height="140" rx="16" fill="#F59E0B" fill-opacity="0.25" stroke="#FBBF24" stroke-width="3"/>
+  <polygon points="336,296 345,316 366,318 350,332 355,353 336,341 317,353 322,332 306,318 327,316" fill="#FDE047"/>
+
+  <!-- Active Neon Lines -->
+  <!-- Horizontal Top Left -->
+  <line x1="96" y1="96" x2="256" y2="96" stroke="url(#neon-cyan)" stroke-width="14" stroke-linecap="round" filter="url(#neon-glow)"/>
+  <!-- Vertical Left Top -->
+  <line x1="96" y1="96" x2="96" y2="256" stroke="url(#neon-cyan)" stroke-width="14" stroke-linecap="round" filter="url(#neon-glow)"/>
+  <!-- Horizontal Middle Left -->
+  <line x1="96" y1="256" x2="256" y2="256" stroke="url(#neon-cyan)" stroke-width="14" stroke-linecap="round" filter="url(#neon-glow)"/>
+  <!-- Vertical Center Top -->
+  <line x1="256" y1="96" x2="256" y2="256" stroke="url(#neon-cyan)" stroke-width="14" stroke-linecap="round" filter="url(#neon-glow)"/>
+
+  <!-- Gold Box Lines -->
+  <line x1="256" y1="256" x2="416" y2="256" stroke="url(#neon-gold)" stroke-width="14" stroke-linecap="round" filter="url(#neon-glow)"/>
+  <line x1="416" y1="256" x2="416" y2="416" stroke="url(#neon-gold)" stroke-width="14" stroke-linecap="round" filter="url(#neon-glow)"/>
+  <line x1="256" y1="416" x2="416" y2="416" stroke="url(#neon-gold)" stroke-width="14" stroke-linecap="round" filter="url(#neon-glow)"/>
+  <line x1="256" y1="256" x2="256" y2="416" stroke="url(#neon-gold)" stroke-width="14" stroke-linecap="round" filter="url(#neon-glow)"/>
+
+  <!-- Connecting Line in Progress (Purple) -->
+  <line x1="256" y1="96" x2="416" y2="96" stroke="url(#neon-purple)" stroke-width="10" stroke-linecap="round" stroke-dasharray="14 10"/>
+
+  <!-- 3x3 Grid Dots -->
+  <!-- Row 1 -->
+  <circle cx="96" cy="96" r="16" fill="#F8FAFC" stroke="#0284C7" stroke-width="4"/>
+  <circle cx="256" cy="96" r="16" fill="#F8FAFC" stroke="#0284C7" stroke-width="4"/>
+  <circle cx="416" cy="96" r="14" fill="#94A3B8" stroke="#334155" stroke-width="3"/>
+
+  <!-- Row 2 -->
+  <circle cx="96" cy="256" r="16" fill="#F8FAFC" stroke="#0284C7" stroke-width="4"/>
+  <circle cx="256" cy="256" r="18" fill="#F8FAFC" stroke="#F59E0B" stroke-width="5" filter="url(#neon-glow)"/>
+  <circle cx="416" cy="256" r="16" fill="#F8FAFC" stroke="#F59E0B" stroke-width="4"/>
+
+  <!-- Row 3 -->
+  <circle cx="96" cy="416" r="14" fill="#94A3B8" stroke="#334155" stroke-width="3"/>
+  <circle cx="256" cy="416" r="16" fill="#F8FAFC" stroke="#F59E0B" stroke-width="4"/>
+  <circle cx="416" cy="416" r="16" fill="#F8FAFC" stroke="#F59E0B" stroke-width="4"/>
+</svg>
