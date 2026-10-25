@@ -44,6 +44,10 @@ jobs:
           cp -r dist/* android/app/src/main/assets/public/
           npx cap copy android || true
 
+      - name: Accept Android SDK Licenses
+        run: |
+          yes | sdkmanager --licenses || true
+
       - name: Build Android APK with Gradle
         working-directory: ./android
         run: |
@@ -53,5 +57,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dots-and-boxes-pro-apk
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: android/app/build/outputs/apk/**/*.apk
           if-no-files-found: error
+
