@@ -51,7 +51,15 @@ jobs:
       - name: Build Android APK with Gradle
         working-directory: ./android
         run: |
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee ../gradle_output.txt
+
+      - name: Report Build Logs on Failure
+        if: failure()
+        run: |
+          echo "### ❌ Gradle Build Error Summary" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -n 120 gradle_output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: Upload APKs Artifact
         uses: actions/upload-artifact@v4
