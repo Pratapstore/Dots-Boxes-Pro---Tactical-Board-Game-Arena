@@ -53,7 +53,7 @@ jobs:
       - name: Build Android APK with Gradle
         working-directory: ./android
         run: |
-          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee ../gradle_output.txt
+          ./gradlew :app:assembleDebug --no-daemon --stacktrace 2>&1 | tee ../gradle_output.txt
 
       - name: Report Build Logs on Failure
         if: failure()
@@ -65,9 +65,15 @@ jobs:
 
       - name: Prepare Named APK File
         run: |
-          ls -la android/app/build/outputs/apk/ || true
-          APK_FILE=$(find android/app/build/outputs/apk/ -name "*.apk" | head -n 1)
-          echo "Found APK at: $APK_FILE"
+          find . -name "*.apk"
+          APK_FILE=$(find . -name "*.apk" | head -n 1)
+          if [ -z "$APK_FILE" ]; then
+            echo "❌ No APK was found in build outputs. Listing android/app/build:"
+            find android/ -name "*.apk" || true
+            find android/app/build -maxdepth 4 || true
+            exit 1
+          fi
+          echo "✅ Found APK at: $APK_FILE"
           cp "$APK_FILE" ./Dots-and-Boxes-Pro-v1.0.apk
           ls -lh ./Dots-and-Boxes-Pro-v1.0.apk
 
