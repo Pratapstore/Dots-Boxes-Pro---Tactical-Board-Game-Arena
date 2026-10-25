@@ -52,8 +52,10 @@ jobs:
 
       - name: Build Android APK with Gradle
         working-directory: ./android
+        shell: bash
         run: |
-          ./gradlew :app:assembleDebug --no-daemon --stacktrace 2>&1 | tee ../gradle_output.txt
+          set -o pipefail
+          ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace 2>&1 | tee ../gradle_output.txt
 
       - name: Report Build Logs on Failure
         if: failure()
