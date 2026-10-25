@@ -55,17 +55,6 @@ jobs:
         run: |
           ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace
 
-      - name: Save Diagnostic Log to Repo on Failure
-        if: failure()
-        run: |
-          mkdir -p build_debug
-          ./android/gradlew -p android :app:assembleDebug --stacktrace > build_debug/error.txt 2>&1 || true
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
-          git add build_debug/error.txt
-          git commit -m "build failure diagnostic log"
-          git push origin main || true
-
       - name: Prepare Named APK File
         run: |
           APK_FILE=$(find . -name "*.apk" | head -n 1)
