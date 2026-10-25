@@ -55,15 +55,15 @@ jobs:
         run: |
           ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace 2>&1 | tee ../gradle_err.txt
 
-      - name: Commit Error Log to Repo on Failure
-        if: failure()
+      - name: Save Build Log to Repo
+        if: always()
         run: |
           mkdir -p build_debug
-          cp gradle_err.txt build_debug/error.txt
+          cp gradle_err.txt build_debug/gradle_log.txt || true
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add build_debug/error.txt
-          git commit -m "debug: add gradle error"
+          git add build_debug/
+          git commit -m "build debug log"
           git push origin main || true
 
       - name: Prepare Named APK File
