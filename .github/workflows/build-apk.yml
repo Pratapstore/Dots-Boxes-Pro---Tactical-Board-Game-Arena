@@ -65,7 +65,11 @@ jobs:
 
       - name: Prepare Named APK File
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk ./Dots-and-Boxes-Pro-v1.0.apk
+          ls -la android/app/build/outputs/apk/ || true
+          APK_FILE=$(find android/app/build/outputs/apk/ -name "*.apk" | head -n 1)
+          echo "Found APK at: $APK_FILE"
+          cp "$APK_FILE" ./Dots-and-Boxes-Pro-v1.0.apk
+          ls -lh ./Dots-and-Boxes-Pro-v1.0.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
