@@ -1,6 +1,6 @@
 [versions]
-kotlinGradlePlugin = "2.2.10"
-coreKtx = "1.19.0"
+kotlinGradlePlugin = "2.0.21"
+coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
