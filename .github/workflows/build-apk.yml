@@ -46,9 +46,10 @@ jobs:
           cp -r dist/* android/app/src/main/assets/public/
           npx cap copy android || true
 
-      - name: Accept Android SDK Licenses
+      - name: Accept Android SDK Licenses & Install Platform 36
         run: |
-          yes | sdkmanager --licenses || true
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platforms;android-36" || true
 
       - name: Build Android APK with Gradle
         working-directory: ./android
@@ -74,7 +75,7 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git add build_debug/
           git commit -m "build log [skip ci]" || true
-          git push origin main || true
+          git push origin HEAD:main || true
 
       - name: Upload Build Log Artifact
         if: always()
@@ -85,7 +86,9 @@ jobs:
 
       - name: Prepare Named APK File
         run: |
-          APK_FILE=$(find . -name "*.apk" | head -n 1)
+          echo "=== SEARCHING FOR COMPILED APK ==="
+          find . -name "*.apk"
+          APK_FILE=$(find android/ -name "*.apk" | head -n 1)
           if [ -z "$APK_FILE" ]; then
             echo "::error::No APK file was found in workspace!"
             exit 1
