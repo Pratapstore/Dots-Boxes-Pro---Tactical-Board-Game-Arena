@@ -53,22 +53,31 @@ jobs:
       - name: Build Android APK with Gradle
         working-directory: ./android
         run: |
-          ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace 2>&1 | tee ../gradle_err.txt
+          set -o pipefail
+          ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace 2>&1 | tee ../gradle_output.txt
 
-      - name: Save Build Log on Failure
-        if: failure()
+      - name: Debug Output Logs
+        if: always()
         run: |
+          echo "=== LAST 100 LINES OF GRADLE OUTPUT ==="
+          tail -n 100 gradle_output.txt || true
+          echo "=== SEARCHING FOR OUTPUT APKs ==="
+          find . -name "*.apk" || true
           mkdir -p build_debug
-          cp gradle_err.txt build_debug/error.txt || true
+          cp gradle_output.txt build_debug/last_build.log || true
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add build_debug/
-          git commit -m "debug: add gradle error [skip ci]" || true
+          git commit -m "build log [skip ci]" || true
           git push origin main || true
 
       - name: Prepare Named APK File
         run: |
           APK_FILE=$(find . -name "*.apk" | head -n 1)
+          if [ -z "$APK_FILE" ]; then
+            echo "::error::No APK file was found in workspace!"
+            exit 1
+          fi
           echo "Found APK at: $APK_FILE"
           cp "$APK_FILE" ./Dots-and-Boxes-Pro-v1.0.apk
           ls -lh ./Dots-and-Boxes-Pro-v1.0.apk
