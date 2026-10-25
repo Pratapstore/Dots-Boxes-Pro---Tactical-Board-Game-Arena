@@ -53,7 +53,18 @@ jobs:
       - name: Build Android APK with Gradle
         working-directory: ./android
         run: |
-          ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace
+          ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace 2>&1 | tee ../gradle_err.txt
+
+      - name: Commit Error Log to Repo on Failure
+        if: failure()
+        run: |
+          mkdir -p build_debug
+          cp gradle_err.txt build_debug/error.txt
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add build_debug/error.txt
+          git commit -m "debug: add gradle error"
+          git push origin main || true
 
       - name: Prepare Named APK File
         run: |
