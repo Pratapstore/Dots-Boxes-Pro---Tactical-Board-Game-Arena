@@ -61,15 +61,27 @@ jobs:
         run: |
           echo "=== LAST 100 LINES OF GRADLE OUTPUT ==="
           tail -n 100 gradle_output.txt || true
-          echo "=== SEARCHING FOR OUTPUT APKs ==="
-          find . -name "*.apk" || true
+          
+          ERR_MSG=$(grep -A 8 "\* What went wrong:" gradle_output.txt | tr '\n' ' ' || true)
+          if [ -n "$ERR_MSG" ]; then
+            echo "::error title=Gradle Error::$ERR_MSG"
+          fi
+          
           mkdir -p build_debug
           cp gradle_output.txt build_debug/last_build.log || true
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git add build_debug/
           git commit -m "build log [skip ci]" || true
           git push origin main || true
+
+      - name: Upload Build Log Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-build-output-log
+          path: gradle_output.txt
 
       - name: Prepare Named APK File
         run: |
