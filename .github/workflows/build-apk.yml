@@ -19,6 +19,12 @@ jobs:
           distribution: 'temurin'
           java-version: 21
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle Wrapper Executable
+        run: chmod +x android/gradlew
+
       - name: Set up Node.js 20
         uses: actions/setup-node@v4
         with:
@@ -32,16 +38,14 @@ jobs:
       - name: Build Web Application Bundle
         run: npm run build
 
-      - name: Sync Capacitor Android
-        run: npx cap sync android
+      - name: Sync Web Assets to Android Project
+        run: |
+          npx cap copy android
+          npx cap update android || true
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Build Android APK
+      - name: Build Android APK with Gradle
         working-directory: ./android
         run: |
-          chmod +x gradlew
           ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Upload APKs Artifact
