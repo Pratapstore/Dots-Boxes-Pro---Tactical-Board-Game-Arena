@@ -53,18 +53,7 @@ jobs:
       - name: Build Android APK with Gradle
         working-directory: ./android
         run: |
-          ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace 2>&1 | tee ../gradle_err.txt
-
-      - name: Save Build Log to Repo
-        if: always()
-        run: |
-          mkdir -p build_debug
-          cp gradle_err.txt build_debug/gradle_log.txt || true
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
-          git add build_debug/
-          git commit -m "build debug log"
-          git push origin main || true
+          ./gradlew :app:assembleDebug -x test -x lint --no-daemon --stacktrace
 
       - name: Prepare Named APK File
         run: |
